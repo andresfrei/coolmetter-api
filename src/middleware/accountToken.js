@@ -2,12 +2,15 @@ import jwt from "jsonwebtoken";
 import { getTokenFromCookie } from "../lib/cookie.js";
 
 export default async function accountToken(req, res, next) {
-  const { headers } = req;
-  const { authorization } = headers;
+  const { authorization } = req.headers;
   let token = null;
 
   if (authorization) {
-    token = authorization.replace(/^Bearer\s/, "");
+    token = authorization.split(" ")[1];
+    const parts = token.split(".");
+    if (parts.length !== 3) {
+      token = null;
+    }
   }
 
   if (!token) {
@@ -18,7 +21,11 @@ export default async function accountToken(req, res, next) {
     return res.status(401).send({ msg: "Auth false" });
   }
 
-  const account = await jwt.verify(token, process.env.JWT_SECRET);
-  req.headers["token"] = account;
-  next();
+  try {
+    const account = jwt.verify(token, process.env.JWT_SECRET);
+    req.headers["token"] = account;
+    next();
+  } catch (error) {
+    return res.status(500).send({ error });
+  }
 }

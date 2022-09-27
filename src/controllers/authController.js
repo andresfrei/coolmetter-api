@@ -22,6 +22,7 @@ export async function login(req, res) {
 
   const { name, _id } = account;
   const token = await createToken({ accountID: _id, email, name });
+  console.log(token);
 
   const serialized = serialize(COOKIE_ACCOUNT, token, {
     httpOnly: true,
