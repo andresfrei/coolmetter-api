@@ -20,6 +20,5 @@ export const productOption = (text) => {
       res[index] = { title, option: val };
     });
   });
-  console.log(res);
   return res;
 };

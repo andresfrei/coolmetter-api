@@ -4,54 +4,42 @@ import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const apiPath = path.join(__dirname, "..", "routes", "api", "*.js");
-const apiCash = path.join(__dirname, "..", "routes", "api", "cash", "*.js");
+const apiPath = path.join(__dirname, "..", "routes", "*.js");
+const apiAdmin = path.join(__dirname, "..", "routes", "admin", "*.js");
 
 export const swaggerOptions = {
   definition: {
     openapi: "3.0.1",
     info: {
       title: "API Documentation",
-      description:
-        "Esta API se ancarga de manejar la información de la empresa MiNegocio.Ar",
+      description: "API from tuPedido.ar",
       version: "1.0.0",
     },
     servers: [
       {
-        url: "http://siscod1.ddns.net:3005",
+        url: "https://backend-express-production.up.railway.app",
       },
       {
-        url: "http://localhost:3000",
+        url: "http://localhost:3001",
       },
     ],
     components: {
       securitySchemes: {
-        userAuth: {
-          type: "apiKey",
-          in: "header",
-          name: "auth",
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
         },
       },
       schemas: {
-        userLogin: {
+        accountLogin: {
           type: "object",
-          required: ["username", "password", "key"],
+          required: ["email", "password"],
           properties: {
-            username: {
+            email: {
               type: "string",
             },
             password: {
-              type: "string",
-            },
-            key: {
-              type: "string",
-            },
-          },
-        },
-        userToken: {
-          type: "object",
-          properties: {
-            token: {
               type: "string",
             },
           },
@@ -59,5 +47,5 @@ export const swaggerOptions = {
       },
     },
   },
-  apis: [apiPath, apiCash],
+  apis: [apiPath, apiAdmin],
 };

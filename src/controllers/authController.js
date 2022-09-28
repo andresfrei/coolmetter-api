@@ -15,6 +15,8 @@ export async function login(req, res) {
     return res.status(401).json({ auth: false });
   }
 
+  console.log(account);
+
   /* const isPassword = await account.comparePassword(password);
     if (!isPassword) {
       return res.status(401).json({ auth: false });
@@ -22,7 +24,6 @@ export async function login(req, res) {
 
   const { name, _id } = account;
   const token = await createToken({ accountID: _id, email, name });
-  console.log(token);
 
   const serialized = serialize(COOKIE_ACCOUNT, token, {
     httpOnly: true,
@@ -31,5 +32,6 @@ export async function login(req, res) {
     path: "/",
   });
   res.setHeader("Set-Cookie", serialized);
-  return res.json(account);
+
+  return res.json({ account, token });
 }

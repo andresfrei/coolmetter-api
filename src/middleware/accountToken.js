@@ -8,7 +8,7 @@ export default async function accountToken(req, res, next) {
   if (authorization) {
     token = authorization.split(" ")[1];
     const parts = token.split(".");
-    if (parts.length !== 3) {
+    if (parts.length != 3) {
       token = null;
     }
   }
@@ -26,6 +26,6 @@ export default async function accountToken(req, res, next) {
     req.headers["token"] = account;
     next();
   } catch (error) {
-    return res.status(500).send({ error });
+    return res.status(401).send({ msg: "Auth false" });
   }
 }

@@ -1,13 +1,10 @@
 import { Router } from "express";
-import { getAccount } from "../../controllers/admin/accountController.js";
-import { getShop } from "../../controllers/admin/shopController.js";
+import shop from "./shop.js";
+import account from "./account.js";
 
 const router = Router();
 
-// Acount routes
-router.get("/account", getAccount);
-
-// Shop routes
-router.get("/shop/:id", getShop);
+router.use("/account", account);
+router.use("/shop", shop);
 
 export default router;
