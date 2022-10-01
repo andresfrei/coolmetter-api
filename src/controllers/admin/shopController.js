@@ -2,9 +2,13 @@ import { COOKIE_ACCOUNT } from "../../config/consts.js";
 import { serialize } from "cookie";
 import { createToken } from "../../lib/token.js";
 import Shop from "../../models/Shop.js";
+import Account from "../../models/Account.js";
+import { token } from "morgan";
+import { matchedData } from "express-validator";
+import { handleHttpError } from "../../lib/validator.js";
 
 export async function getShop(req, res) {
-  const { headers, query, params } = req;
+  const { headers, params } = req;
   const { token } = headers;
   const { accountID, shopID } = token;
   const { id } = params;
@@ -39,5 +43,25 @@ export async function getShop(req, res) {
     return res.json(data);
   } catch (error) {
     return res.status(500).json({ msg: error.message });
+  }
+}
+
+export async function createShop(req, res) {
+  const body = matchedData(req);
+  const { token } = req.headers;
+  try {
+    body.accountID = token.accountID;
+    console.log(body);
+    const shop = new Shop(body);
+    await shop.save();
+    const account = await Account.findById({ _id: token.accountID });
+    console.log(account);
+    account.shops.insert = { shopID: shop._id, name: shop.name };
+    console.log(account);
+    await account.save();
+    console.log(account);
+    res.status(201).json({ shop });
+  } catch (e) {
+    handleHttpError(res, e);
   }
 }

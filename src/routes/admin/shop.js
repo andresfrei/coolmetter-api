@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { getShop } from "../../controllers/admin/shopController.js";
+import { getShop, createShop } from "../../controllers/admin/shopController.js";
+import { validateNewShop } from "../../validator/shop.js";
 
 const router = Router();
 
@@ -22,5 +23,7 @@ router.get("/:id", getShop);
  *    security:
  *      - bearerAuth: []
  */
+
+router.post("/", validateNewShop, createShop);
 
 export default router;

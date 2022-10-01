@@ -1,6 +1,6 @@
 import express from "express";
-import { validateLogin } from "../validator/auth.js";
-import { login } from "../controllers/authController.js";
+import { validateLogin, validateRegister } from "../validator/auth.js";
+import { login, register } from "../controllers/authController.js";
 
 const router = express.Router();
 
@@ -25,5 +25,7 @@ router.post("/login", validateLogin, login);
  *        '401':
  *          description: Error de validacion.
  */
+
+router.post("/register", validateRegister, register);
 
 export default router;
