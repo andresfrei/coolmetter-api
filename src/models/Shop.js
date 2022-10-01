@@ -4,7 +4,7 @@ const schema = new Schema(
   {
     accountID: { type: Types.ObjectId },
     name: { type: String },
-    uri: { type: String, unique: true },
+    uid: { type: String, unique: true },
     address: { type: Object },
     phone: { type: String },
     whatsApp: { type: String },
@@ -15,7 +15,7 @@ const schema = new Schema(
     googleSheetsUrl: { type: String },
     categories: { type: Array },
     products: { type: Array },
-    active: { type: Boolean, default: true },
+    status: { type: Number, enum: [0, 1, 2, 3], default: 0 },
   },
   {
     timestamps: true,

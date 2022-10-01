@@ -1,7 +1,7 @@
 export default async function shopToken(req, res, next) {
-  const { token } = req;
+  const { shopID } = req.token;
 
-  if (!token?.shopID) {
+  if (!shopID) {
     return res.status(401).send({ msg: "I do not select shop !!!" });
   }
 
