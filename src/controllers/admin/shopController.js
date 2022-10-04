@@ -49,17 +49,16 @@ export async function getShop(req, res) {
 export async function createShop(req, res) {
   const body = matchedData(req);
   const { token } = req.headers;
+  const { accountID } = token;
   try {
-    body.accountID = token.accountID;
-    console.log(body);
+    body.accountID = accountID;
     const shop = new Shop(body);
     await shop.save();
-    const account = await Account.findById({ _id: token.accountID });
-    console.log(account);
-    account.shops.insert = { shopID: shop._id, name: shop.name };
-    console.log(account);
-    await account.save();
-    console.log(account);
+
+    await Account.findByIdAndUpdate(accountID, {
+      $push: { shops: { shopID: shop._id.toString(), name: shop.name } },
+    });
+
     res.status(201).json({ shop });
   } catch (e) {
     handleHttpError(res, e);

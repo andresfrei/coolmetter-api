@@ -15,6 +15,9 @@ const schema = new Schema(
     googleSheetsUrl: { type: String },
     categories: { type: Array },
     products: { type: Array },
+    credits: {
+      count: { type: Number, default: 0, expiration: { type: Date } },
+    },
     status: { type: Number, enum: [0, 1, 2, 3], default: 0 },
   },
   {

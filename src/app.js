@@ -2,6 +2,9 @@ import "dotenv/config.js";
 import express from "express";
 import cors from "cors";
 
+import { Server as WebSocketServer } from "socket.io";
+import http from "http";
+
 import dbConnect from "./config/database.js";
 import session from "express-session";
 
@@ -16,6 +19,7 @@ import { router } from "./routes/index.js";
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { socketConnection } from "./lib/socket.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -54,7 +58,15 @@ app.use("/", router);
 
 dbConnect();
 
+const server = http.createServer(app);
+const io = new WebSocketServer(server, {
+  cors: { origin: "*" },
+});
+
+io.on("connection", socketConnection);
+
 const port = process.env.PORT || 3001;
-app.listen(port, () => {
+
+server.listen(port, () => {
   console.log(`http://localhost:${port}`);
 });

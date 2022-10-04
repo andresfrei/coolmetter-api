@@ -16,6 +16,10 @@ router.use("/auth", auth);
 //API Routes
 router.use("/api/shop", shop);
 
+router.get("/", (req, res) => {
+  res.render("index");
+});
+
 router.get("*", (req, res) => {
   res.status(404);
   res.render("404");
