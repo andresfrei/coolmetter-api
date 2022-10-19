@@ -11,3 +11,17 @@ export async function createToken(data) {
   });
   return token;
 }
+
+export function validToken(token) {
+  const parts = token.split(".");
+  if (parts.length != 3) {
+    return null;
+  }
+  const secret = process.env.JWT_SECRET;
+  try {
+    const session = jwt.verify(token, secret);
+    return session;
+  } catch (error) {
+    return null;
+  }
+}

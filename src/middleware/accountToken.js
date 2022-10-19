@@ -12,7 +12,6 @@ export default async function accountToken(req, res, next) {
       token = null;
     }
   }
-
   if (!token) {
     token = getTokenFromCookie(req);
   }

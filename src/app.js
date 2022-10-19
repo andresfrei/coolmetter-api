@@ -1,9 +1,12 @@
 import "dotenv/config.js";
 import express from "express";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 
-import { Server as WebSocketServer } from "socket.io";
 import http from "http";
+import { Server as WebSocketServer } from "socket.io";
+import Sockets from "./lib/sockets.js";
+import { socketMiddleware } from "./middleware/socket.js";
 
 import dbConnect from "./config/database.js";
 import session from "express-session";
@@ -19,7 +22,7 @@ import { router } from "./routes/index.js";
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { socketConnection } from "./lib/socket.js";
+import { validToken } from "./lib/token.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -27,6 +30,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 app.use(cors());
+app.use(cookieParser());
 
 const filesStoage = path.join(__dirname, "storege");
 const pathViews = path.join(__dirname, "views");
@@ -54,19 +58,22 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use("/api/doc", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 //Routes
-app.use("/", router);
+app.use("/api", router);
 
 dbConnect();
 
 const server = http.createServer(app);
-const io = new WebSocketServer(server, {
-  cors: { origin: "*" },
-});
 
-io.on("connection", socketConnection);
+export const io = new WebSocketServer(server, {
+  cors: {
+    origin: "*",
+  },
+});
+io.use(socketMiddleware);
+Sockets(io);
 
 const port = process.env.PORT || 3001;
 
 server.listen(port, () => {
-  console.log(`http://localhost:${port}`);
+  console.log(`Server on port ${port}`);
 });

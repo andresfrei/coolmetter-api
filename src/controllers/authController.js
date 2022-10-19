@@ -1,4 +1,3 @@
-import { serialize } from "cookie";
 import { matchedData } from "express-validator";
 import Account from "../models/Account.js";
 import { createToken } from "../lib/token.js";
@@ -12,14 +11,11 @@ export async function login(req, res) {
 
   const data = await Account.find({ email });
   const account = data[0];
-  console.log(account);
   const status = account?.status;
 
   if (!status) {
     return res.status(401).json({ auth: false });
   }
-
-  console.log(account);
 
   const isPassword = await account.comparePassword(password);
   if (!isPassword) {
@@ -29,13 +25,12 @@ export async function login(req, res) {
   const { name, _id } = account;
   const token = await createToken({ accountID: _id, email, name });
 
-  const serialized = serialize(COOKIE_ACCOUNT, token, {
+  res.cookie(COOKIE_ACCOUNT, token, {
+    maxAge: 1000 * 60 * 60 * 24 * 7,
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-    path: "/",
+    secure: true,
+    sameSite: "lax",
   });
-  res.setHeader("Set-Cookie", serialized);
 
   return res.json({ account, token });
 }

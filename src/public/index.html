@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tuPedido.ar</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SUQiOiI2MzM3OGEyNDlmYjk4ZTViYjJiY2UwOGYiLCJlbWFpbCI6ImFjY291bnQxQGdtYWlsLmNvbSIsIm5hbWUiOiJKdWFuIFBlcmV6Iiwic2hvcElEIjoiNjMwNGM2ZThjZWQzZDNmYjFkZDY0ZTY5IiwiaWF0IjoxNjY2MTk2MTc5LCJleHAiOjE2Njg3ODgxNzl9.y_rGi74OKx7OLOCZQ6ZVpFrZCb6BG47s3-ciitzwphE";
+      const socket = io({
+        auth: {
+          token,
+        },
+      });
+      socket.on("message", (data) => {
+        console.log(data);
+      });
+      socket.on("order", (data) => {
+        console.log(data);
+      });
+    </script>
+  </head>
+  <body></body>
+</html>

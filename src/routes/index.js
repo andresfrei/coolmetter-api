@@ -1,8 +1,9 @@
 import { Router } from "express";
 import accountToken from "../middleware/accountToken.js";
 
-import auth from "./auth.js";
-import shop from "./shop.js";
+import auth from "./auth/index.js";
+import shop from "./shop/index.js";
+import order from "./order/index.js";
 import admin from "./admin/index.js";
 
 export const router = Router();
@@ -14,7 +15,8 @@ router.use("/admin", accountToken, admin);
 router.use("/auth", auth);
 
 //API Routes
-router.use("/api/shop", shop);
+router.use("/shop", shop);
+router.use("/order", order);
 
 router.get("/", (req, res) => {
   res.render("index");
