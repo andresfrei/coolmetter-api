@@ -1,8 +1,8 @@
-import express from "express";
-import { getShop } from "../../controllers/shopController.js";
+import express from 'express'
+import { getShopByUid } from '../../controllers/shop.controller.js'
 
-const router = express.Router();
+const router = express.Router()
 
-router.get("/:uid", getShop);
+router.get('/:uid', getShopByUid)
 
-export default router;
+export default router

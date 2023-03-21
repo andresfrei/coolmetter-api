@@ -1,8 +1,8 @@
-import express from "express";
-import { emitMessage } from "../../controllers/shopController.js";
+import express from 'express'
+/* import { emitMessage } from '../../controllers/shop.controller.js' */
 
-const router = express.Router();
+const router = express.Router()
 
-router.post("/:id", emitMessage);
+/* router.post('/:id', emitMessage) */
 
-export default router;
+export default router

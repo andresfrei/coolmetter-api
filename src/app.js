@@ -1,6 +1,5 @@
 import "dotenv/config.js";
 import express from "express";
-import cookieParser from "cookie-parser";
 import cors from "cors";
 
 import http from "http";
@@ -9,7 +8,7 @@ import Sockets from "./lib/sockets.js";
 import { socketMiddleware } from "./middleware/socket.js";
 
 import dbConnect from "./config/database.js";
-import session from "express-session";
+import cookieParser from "cookie-parser";
 
 import morgan from "morgan";
 import multer from "multer";
@@ -22,42 +21,36 @@ import { router } from "./routes/index.js";
 
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { validToken } from "./lib/token.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 
-app.use(cors());
-app.use(cookieParser());
+const whiteList = ["http://localhost:3000"];
+
+app.use(cors({ origin: whiteList }));
 
 const filesStoage = path.join(__dirname, "storege");
 const pathViews = path.join(__dirname, "views");
 const pathPublic = path.join(__dirname, "public");
 
-//Config
+// Config
 app.set("views", pathViews);
 app.set("view engine", "ejs");
 
-//Middlewares
+// Middlewares
 app.use(express.static(pathPublic));
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(multer({ dest: filesStoage }).single("csv"));
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-  })
-);
+app.use(cookieParser());
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use("/api/doc", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-//Routes
+// Routes
 app.use("/api", router);
 
 dbConnect();

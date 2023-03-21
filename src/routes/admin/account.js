@@ -1,21 +1,9 @@
-import { Router } from "express";
-import { getAccount } from "../../controllers/admin/accountController.js";
+import { Router } from 'express'
+import { getAccount } from '../../controllers/account.controller.js'
 
-const router = Router();
+const router = Router()
 
 // Shop routes
-router.get("/", getAccount);
-/**
- * @swagger
- * /admin/account:
- *  get:
- *    summary: Datos de la cuenta
- *    tags: [Account]
- *    responses:
- *      201:
- *        description: Devuelve los datos de la cuenta
- *    security:
- *      - bearerAuth: []
- */
+router.get('/', getAccount)
 
-export default router;
+export default router

@@ -1,13 +1,13 @@
-import { existsSync, readFileSync } from "fs";
+import { existsSync, readFileSync } from 'fs'
 
-export function isExistFile(filePath) {
-  return existsSync(filePath);
+export function isExistFile (filePath) {
+  return existsSync(filePath)
 }
 
-export function getFileData(filePath) {
+export function getFileData (filePath) {
   if (!isExistFile(filePath)) {
-    return null;
+    return null
   }
-  const file = readFileSync(filePath, "utf-8");
-  return file;
+  const file = readFileSync(filePath, 'utf-8')
+  return file
 }

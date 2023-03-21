@@ -1,31 +1,11 @@
-import express from "express";
-import { validateLogin, validateRegister } from "../../validator/auth.js";
-import { login, register } from "../../controllers/authController.js";
+import express from 'express'
+import { validateLogin, validateRegister } from '../../validator/auth.js'
+import { loginAccount, registerAccount, validateAccount } from '../../controllers/auth.controller.js'
 
-const router = express.Router();
+const router = express.Router()
 
-router.post("/login", validateLogin, login);
-/**
- * Post user login
- * @openapi
- * /auth/login:
- *    post:
- *      tags:
- *        - Login
- *      summary: "Login de usuario"
- *      description: Endpoint logueo de usuario de app
- *      requestBody:
- *          content:
- *            application/json:
- *              schema:
- *                $ref: "#/components/schemas/accountLogin"
- *      responses:
- *        '200':
- *          description: Retorna token validacion.
- *        '401':
- *          description: Error de validacion.
- */
+router.post('/login', validateLogin, loginAccount)
+router.post('/register', validateRegister, registerAccount)
+router.get('/validate', validateAccount)
 
-router.post("/register", validateRegister, register);
-
-export default router;
+export default router
