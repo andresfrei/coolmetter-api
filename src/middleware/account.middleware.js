@@ -1,11 +1,12 @@
 import jwt from 'jsonwebtoken'
 import { COOKIE_ACCOUNT } from '../config/consts.js'
-import { loginResponse } from '../config/messageResponse.js'
+import messageResponse from '../config/messajesResponses.js'
 import { findAccountService } from '../services/account.service.js'
+
+const { authFalse, invalidToken } = messageResponse
 
 export async function validateAccountToken (req, res, next) {
   const { authorization } = req.headers
-  const { authFalse } = loginResponse
   let token = null
   if (authorization) {
     token = authorization.split(' ')[1]
@@ -15,21 +16,22 @@ export async function validateAccountToken (req, res, next) {
     }
   }
   if (!token) { token = req.cookies[COOKIE_ACCOUNT] }
-  if (!token) return res.status(authFalse.status).send(authFalse.message)
+  if (!token) return res.status(authFalse.status).json(authFalse.data)
   try {
-    const account = jwt.verify(token, process.env.JWT_SECRET)
-    req.headers.token = account
+    const session = jwt.verify(token, process.env.JWT_SECRET)
+    const { idAccount } = session
+    if (!idAccount) return res.status(authFalse.status).send(authFalse.data)
+    req.headers.token = session
     next()
   } catch (error) {
-    return res.status(authFalse.status).send(authFalse.message)
+    return res.status(authFalse.status).send(authFalse.data)
   }
 }
 
 export async function validateAccount (req, res, next) {
-  const { accountId } = req.headers.token
-  const response = await findAccountService({ _id: accountId })
+  const { idAccount } = req.headers.token
+  const response = await findAccountService({ _id: idAccount })
   const { status } = response
-  const { invalidToken } = loginResponse
   if (status !== 200) return res.status(invalidToken.status).send(invalidToken.data)
   next()
 }

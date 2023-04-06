@@ -1,0 +1,43 @@
+export const typesShop = [
+  'Bebidas',
+  'Cafe',
+  'Carniceria',
+  'Empanaderia',
+  'Ferreteria',
+  'Kiosco',
+  'Liberia',
+  'Mascotas',
+  'Panaderia',
+  'Pizzeria',
+  'Pescaderia',
+  'Restaurante',
+  'Dietetica',
+  'Salud y belleza',
+  'Suplementos',
+  'Verduleria',
+  'Vivero'
+]
+
+export const categoriesProduct = [
+  'Arepas',
+  'Bebidas',
+  'Cafetería',
+  'Calzones',
+  'Carnes',
+  'Celíacos',
+  'Ensaladas',
+  'Empanadas',
+  'Hamburguesas',
+  'Helados',
+  'Milanesas',
+  'Papas fritas',
+  'Parrilla',
+  'Pescados y mariscos',
+  'Pizzas',
+  'Pollo',
+  'Postres',
+  'Sushi',
+  'Sandwiches',
+  'Vegetariano',
+  'Vegano'
+]

@@ -6,7 +6,8 @@ const schema = new Schema(
     name: String,
     email: String,
     password: String,
-    shops: [],
+    whatsApp: String,
+    nodes: [],
     status: { type: Number, enum: [0, 1, 2, 3], default: 0 }
   },
   {
@@ -20,7 +21,7 @@ schema.methods.encryptPassword = async (password) => {
   return await bcrypt.hash(password, salt)
 }
 
-schema.methods.comparePassword = async function (password) {
+schema.methods.comparePassword = async function(password) {
   return await bcrypt.compare(password, this.password)
 }
 

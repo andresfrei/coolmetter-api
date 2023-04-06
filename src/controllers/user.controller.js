@@ -5,3 +5,7 @@ export async function getAccount (req, res) {
   const response = await findAccountService({ _id: accountId, noPassword: true })
   return res.status(response.status).send(response.data)
 }
+
+export async function editAccount (req, res) {
+  return res.send('ok')
+}

@@ -2,24 +2,22 @@ import { Router } from 'express'
 import { validateAccountToken } from '../middleware/account.middleware.js'
 
 import auth from './auth/index.js'
-import shop from './shop/index.js'
-import order from './order/index.js'
 import admin from './admin/index.js'
+import device from './device/index.js'
 
 export const router = Router()
-
-// Admin Routes
-router.use('/admin', validateAccountToken, admin)
 
 // Auth Routes
 router.use('/auth', auth)
 
-// API Routes
-router.use('/shop', shop)
-router.use('/order', order)
+// Admin Routes
+router.use('/admin', validateAccountToken, admin)
+
+// Device Routes
+router.use('/device', device)
 
 router.get('/', (req, res) => {
-  res.send('<H1>tuPedido-Api</H1>')
+  res.send('<H1>CoolMetter-Api</H1>')
 })
 
 router.get('*', (req, res) => {

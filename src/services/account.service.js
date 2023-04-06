@@ -1,25 +1,18 @@
-import { accountResponse } from '../config/messageResponse.js'
+import res from '../config/messajesResponses.js'
 import Account from '../models/account.model.js'
 
-export async function addShopToAccount (accountId, { shopId, name }) {
-  await Account.findByIdAndUpdate(accountId, {
-    $push: { shops: { shopId, name } }
-  })
-}
-
-export async function findAccountService (query) {
-  const { noPassword, ...restOfQuery } = query
-  const { _id, email } = restOfQuery
-  if (!_id && !email) return accountResponse.invalidQuery
-  const account = await Account.findOne(restOfQuery)
-  if (!account) return accountResponse.notFound
+export async function findAccountService (params) {
+  const { noPassword, ...query } = params
+  const { _id, email } = query
+  if (!_id && !email) return res.invalidQuery
+  const account = await Account.findOne(query)
+  if (!account) return res.notFound
   if (!noPassword) return { status: 200, data: account }
   const cleanData = await cleanAccount(account)
   return { status: 200, data: cleanData }
 }
 
 function cleanAccount (account) {
-  const data = JSON.stringify(account)
-  const { password, ...restOfAccount } = data
+  const { password, ...restOfAccount } = account.toJSON()
   return restOfAccount
 }
