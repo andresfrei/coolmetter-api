@@ -37,7 +37,7 @@ export async function syncHashService (hash, { name, nodes }) {
   return { status: 200, data: { idAccount, idDevice, token } }
 }
 
-export async function reSyncHashService (idAccount, idDevice) {
+export async function reSyncService (idAccount, idDevice) {
   if (!idAccount || !idDevice) return res.invalidQuery
   const _id = Types.ObjectId(idDevice)
   const device = await Device.findOne({ _id, idAccount })
