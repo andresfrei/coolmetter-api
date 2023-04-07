@@ -13,4 +13,10 @@ const validateHashSync = [
   (req, res, next) => validateResult(req, res, next)
 ]
 
-export { validateNewSync, validateHashSync }
+const validateReSync = [
+  check('idAccount').isString().exists().isLength(24),
+  check('idDevice').isString().exists().isLength(24),
+  (req, res, next) => validateResult(req, res, next)
+]
+
+export { validateNewSync, validateHashSync, validateReSync }

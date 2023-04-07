@@ -1,12 +1,23 @@
 import { matchedData } from 'express-validator'
 import { handleHttpError } from '../lib/validator.js'
-import { createSyncService, syncHashService } from '../services/sync.service.js'
+import { createSyncService, reSyncHashService, syncHashService } from '../services/sync.service.js'
 
 export async function syncDeviceController (req, res) {
   try {
     const { hash } = req.params
     const { name, nodes } = req.body
     const response = await syncHashService(hash, { name, nodes })
+    res.status(response.status).send(response.data)
+  } catch (e) {
+    handleHttpError(res, e)
+  }
+}
+
+export async function reSyncDeviceController (req, res) {
+  try {
+    const body = matchedData(req)
+    const { idAccount, idDevice } = body
+    const response = await reSyncHashService(idAccount, idDevice)
     res.status(response.status).send(response.data)
   } catch (e) {
     handleHttpError(res, e)

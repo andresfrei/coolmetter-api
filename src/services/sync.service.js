@@ -1,3 +1,4 @@
+import { Types } from 'mongoose'
 import Sync from '../models/sync.model.js'
 import Node from '../models/node.model.js'
 import Device from '../models/device.model.js'
@@ -33,5 +34,16 @@ export async function syncHashService (hash, { name, nodes }) {
   sync.delete()
   const nodeList = nodes.map(node => node.uid)
   const token = await createToken({ idAccount, idDevice, nodes: nodeList })
-  return { status: 200, data: { idDevice, token } }
+  return { status: 200, data: { idAccount, idDevice, token } }
+}
+
+export async function reSyncHashService (idAccount, idDevice) {
+  if (!idAccount || !idDevice) return res.invalidQuery
+  const _id = Types.ObjectId(idDevice)
+  const device = await Device.findOne({ _id, idAccount })
+  if (!device) return res.invalidData
+  const nodes = await Node.find({ idAccount, idDevice })
+  const nodesList = nodes.map(node => node.uid)
+  const token = await createToken({ idAccount, idDevice, nodes: nodesList })
+  return { status: 200, data: { token } }
 }
