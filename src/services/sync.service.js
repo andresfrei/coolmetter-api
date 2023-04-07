@@ -33,5 +33,5 @@ export async function syncHashService (hash, { name, nodes }) {
   sync.delete()
   const nodeList = nodes.map(node => node.uid)
   const token = await createToken({ idAccount, idDevice, nodes: nodeList })
-  return { status: 200, data: { token } }
+  return { status: 200, data: { idDevice, token } }
 }
