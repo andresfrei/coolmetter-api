@@ -6,7 +6,7 @@ const schema = new Schema(
     name: String,
     email: String,
     password: String,
-    whatsApp: String,
+    phone: { type: String, require: true, unique: true },
     nodes: [],
     status: { type: Number, enum: [0, 1, 2, 3], default: 0 }
   },

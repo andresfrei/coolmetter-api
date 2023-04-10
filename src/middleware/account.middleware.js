@@ -1,9 +1,19 @@
 import jwt from 'jsonwebtoken'
 import { COOKIE_ACCOUNT } from '../config/consts.js'
-import messageResponse from '../config/messajesResponses.js'
+import msg from '../config/messajesResponses.js'
 import { findAccountService } from '../services/account.service.js'
+import { keys } from '../config/keys.js'
 
-const { authFalse, invalidToken } = messageResponse
+const { authFalse, invalidToken, invalidData } = msg
+
+export async function validateKey (req, res, next) {
+  const { authorization } = req.headers
+  if (!authorization) return res.status(invalidToken.status).send(invalidToken.data)
+  const key = authorization.split(' ')[1]
+  const isKey = keys.filter(item => item === key)
+  if (isKey.length === 0) return res.status(invalidData.status).send(invalidData.data)
+  next()
+}
 
 export async function validateAccountToken (req, res, next) {
   const { authorization } = req.headers
