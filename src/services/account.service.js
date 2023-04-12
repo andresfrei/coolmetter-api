@@ -2,7 +2,8 @@ import res from '../config/messajesResponses.js'
 import Account from '../models/account.model.js'
 import { createLinkService } from './link.service.js'
 import { urlFrontend } from '../config/urls.js'
-import { createToken } from '../lib/token.js'
+import { createToken, validToken } from '../lib/token.js'
+import { findDevicesService } from './device.service.js'
 
 export async function findAccountService (params) {
   const { noPassword, ...query } = params
@@ -13,6 +14,17 @@ export async function findAccountService (params) {
   if (!noPassword) return { status: 200, data: account }
   const cleanData = await cleanAccount(account)
   return { status: 200, data: cleanData }
+}
+
+export async function findAccountByToken (token) {
+  const { authFalse } = res
+  const session = validToken(token)
+  const { idAccount } = session
+  if (!idAccount) return authFalse
+  const account = await Account.findById(idAccount)
+  if (!account) return authFalse
+  const devices = await findDevicesService({ idAccount })
+  return { status: 200, data: { account, devices } }
 }
 
 export async function findAccountByPhoneService (phone) {

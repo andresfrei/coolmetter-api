@@ -2,6 +2,7 @@ import { matchedData } from 'express-validator'
 import { COOKIE_ACCOUNT } from '../config/consts.js'
 import { handleHttpError } from '../lib/validator.js'
 import { loginService, registerService, validateService } from '../services/auth.service.js'
+import { findAccountByToken } from '../services/account.service.js'
 
 export async function loginAccount (req, res) {
   const { email, password } = req.body
@@ -15,6 +16,13 @@ export async function loginAccount (req, res) {
     })
   }
   return res.status(response.status).json(response.data)
+}
+
+export async function loginTokenController (req, res) {
+  const { token } = req.params
+  const response = await findAccountByToken(token)
+  const { status, data } = response
+  res.status(status).send(data)
 }
 
 export async function registerAccount (req, res) {
