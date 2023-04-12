@@ -7,8 +7,9 @@ export async function createLinkService (payload) {
 }
 
 export async function findLinkService (id) {
-  const link = await Link.findByIdAndDelete(id)
+  const link = await Link.findById(id)
   if (!link) return { status: 404, data: { message: 'invalid link' } }
   const { payload } = link
+  link.delete()
   return { status: 200, data: payload }
 }
