@@ -2,7 +2,7 @@ import { model, Schema } from 'mongoose'
 
 const schema = new Schema(
   {
-    payload: { type: Object, require: true }
+    uid: { type: String, require: true }
   },
   {
     timestamps: true,
@@ -10,4 +10,4 @@ const schema = new Schema(
   }
 )
 
-export default model('Link', schema)
+export default model('Key', schema)

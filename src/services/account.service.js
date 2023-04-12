@@ -19,8 +19,8 @@ export async function findAccountByPhoneService (phone) {
   const account = await Account.findOne({ phone }).select(['name', 'email'])
   if (!account) return { status: 200, data: {} }
   const idAccount = account._id.toString()
-  const url = urlFrontend.adminDevices + '?token=' + await createToken({ idAccount })
-  const link = await createLinkService(url)
+  const token = await createToken({ idAccount })
+  const link = await createLinkService({ token })
   const { name, email } = account
   const idLink = link.data.idLink
   const newLink = urlFrontend.link + '/' + idLink
