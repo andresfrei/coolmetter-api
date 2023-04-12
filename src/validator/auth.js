@@ -10,7 +10,7 @@ const validateLogin = [
 const validateRegister = [
   check('email').exists().notEmpty(),
   check('name').exists().notEmpty(),
-  check('phone').exists().notEmpty().isLength(14),
+  check('phone').exists().notEmpty().isLength(12),
   check('password').exists().notEmpty().isLength({ min: 6, max: 15 }),
   (req, res, next) => validateResult(req, res, next)
 ]

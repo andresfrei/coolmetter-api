@@ -1,8 +1,5 @@
 import res from '../config/messajesResponses.js'
 import Account from '../models/account.model.js'
-import { createLinkService } from './link.service.js'
-import { urlFrontend } from '../config/urls.js'
-import { createToken } from '../lib/token.js'
 
 export async function findAccountService (params) {
   const { noPassword, ...query } = params
@@ -17,14 +14,8 @@ export async function findAccountService (params) {
 
 export async function findAccountByPhoneService (phone) {
   const account = await Account.findOne({ phone }).select(['name', 'email'])
-  if (!account) return { status: 200, data: {} }
-  const idAccount = account._id.toString()
-  const url = urlFrontend.adminDevices + '?token=' + await createToken({ idAccount })
-  const link = await createLinkService(url)
-  const { name, email } = account
-  const idLink = link.data.idLink
-  const newLink = urlFrontend.link + '/' + idLink
-  return { status: 200, data: { name, email, link: newLink } }
+  const data = account || {}
+  return { status: 200, data }
 }
 
 function cleanAccount (account) {

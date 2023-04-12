@@ -5,6 +5,7 @@ import auth from './auth/index.js'
 import admin from './admin/index.js'
 import device from './device/index.js'
 import chat from './chat/index.js'
+import link from './link/index.js'
 
 export const router = Router()
 
@@ -13,6 +14,9 @@ router.use('/auth', auth)
 
 // Chat Routes
 router.use('/chat', validateKey, chat)
+
+// Links Routes
+router.use('/link', link)
 
 // Admin Routes
 router.use('/admin', validateAccountToken, admin)

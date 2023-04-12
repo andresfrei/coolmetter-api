@@ -1,3 +1,3 @@
 export const keys = [
-  'dfgkdfgdfggdgdghfghfghyt'
+  'YHT567YUJP8907TYUP'
 ]
