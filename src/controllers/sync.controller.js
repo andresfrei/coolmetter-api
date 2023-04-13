@@ -5,8 +5,8 @@ import { createSyncService, reSyncService, syncHashService } from '../services/s
 export async function syncDeviceController (req, res) {
   try {
     const { hash } = req.params
-    const { name, nodes } = req.body
-    const response = await syncHashService(hash, { name, nodes })
+    const data = req.body
+    const response = await syncHashService(hash, data)
     res.status(response.status).send(response.data)
   } catch (e) {
     handleHttpError(res, e)

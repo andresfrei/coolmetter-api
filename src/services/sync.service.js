@@ -20,12 +20,13 @@ export async function findSyncService (query) {
   return { status: 200, data: sync }
 }
 
-export async function syncHashService (hash, { name, nodes }) {
+export async function syncHashService (hash, { name, model, firmware, nodes }) {
   if (!hash || !nodes) return res.invalidQuery
   const sync = await Sync.findOne({ hash })
   if (!sync) return res.invalidData
   const { idAccount } = sync
-  const newDevice = await Device.create({ idAccount, name })
+  const uidNodes = nodes.map(node => node.uid)
+  const newDevice = await Device.create({ idAccount, name, model, firmware, nodes: uidNodes })
   const idDevice = newDevice._id
   const newNodes = nodes.map(node => {
     return { idAccount, idDevice, ...node }

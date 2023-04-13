@@ -3,7 +3,8 @@ import Account from '../models/account.model.js'
 import { createLinkService } from './link.service.js'
 import { urlFrontend } from '../config/urls.js'
 import { createToken, validToken } from '../lib/token.js'
-import { findDevicesService } from './device.service.js'
+import { findDevicesNodesService } from './device.service.js'
+import { Types } from 'mongoose'
 
 export async function findAccountService (params) {
   const { noPassword, ...query } = params
@@ -21,9 +22,9 @@ export async function findAccountByToken (token) {
   const session = validToken(token)
   const { idAccount } = session
   if (!idAccount) return authFalse
-  const account = await Account.findById(idAccount)
+  const account = await Account.findById(idAccount).select(['_id', 'name', 'phone', 'email'])
   if (!account) return authFalse
-  const devices = await findDevicesService({ idAccount })
+  const devices = await findDevicesNodesService({ idAccount: Types.ObjectId(idAccount) })
   return { status: 200, data: { account, devices } }
 }
 

@@ -9,6 +9,8 @@ const validateNewSync = [
 const validateHashSync = [
   param('hash').exists().isLength(7),
   check('name').isString(),
+  check('model').isString(),
+  check('firmware').isNumeric(),
   check('nodes').isArray().exists(),
   (req, res, next) => validateResult(req, res, next)
 ]
