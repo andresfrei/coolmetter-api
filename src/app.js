@@ -1,6 +1,7 @@
 import 'dotenv/config.js'
 import express from 'express'
 import cors from 'cors'
+import { whiteList } from './config/cors.js'
 
 import http from 'http'
 /* import Sockets from './lib/sockets.js'
@@ -25,8 +26,6 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const app = express()
-
-const whiteList = ['http://localhost:3000']
 
 app.use(cors({ origin: whiteList }))
 
